@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: httpbin-api
+  description: Retrieve artist details
+spec:
+  type: openapi
+  lifecycle: production
+  owner: developers
+  system: applications
+  definition:
+    $text: https://httpbin.org/spec.json

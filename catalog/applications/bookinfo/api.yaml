@@ -1,0 +1,12 @@
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-api
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: bookinfo-api
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: developers
+  system: applications
+  definition:
+    $text: https://github.com/istio/istio/tree/master/samples/bookinfo/swagger.yaml

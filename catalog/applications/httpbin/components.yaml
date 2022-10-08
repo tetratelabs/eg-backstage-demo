@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: httpbin
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'app=httpbin'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: developers
+  system: applications
+  providesApis:
+    - bookinfo-api
