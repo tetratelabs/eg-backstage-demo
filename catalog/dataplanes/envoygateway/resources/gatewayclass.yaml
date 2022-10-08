@@ -1,0 +1,8 @@
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: GatewayClass
+metadata:
+  name: eg
+  labels:
+    data-plane: envoy-gateway
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller

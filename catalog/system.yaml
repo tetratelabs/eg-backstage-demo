@@ -5,3 +5,10 @@ metadata:
   name: applications
 spec:
   owner: developers
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: controlplanes
+spec:
+  owner: sres

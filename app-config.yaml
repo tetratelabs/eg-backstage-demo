@@ -83,6 +83,19 @@ catalog:
       target: ../../catalog/all.yaml
 
 kubernetes:
+  customResources:
+    - group: 'gateway.networking.k8s.io'
+      apiVersion: 'v1beta1'
+      plural: 'gatewayclasses'
+    - group: 'gateway.networking.k8s.io'
+      apiVersion: 'v1beta1'
+      plural: 'gateways'
+    - group: 'gateway.networking.k8s.io'
+      apiVersion: 'v1beta1'
+      plural: 'httproutes'
+    - group: 'config.gateway.envoyproxy.io'
+      apiVersion: 'v1alpha1'
+      plural: 'envoyproxies'
   serviceLocatorMethod:
     type: 'multiTenant'
   clusterLocatorMethods:

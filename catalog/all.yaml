@@ -6,5 +6,7 @@ metadata:
 spec:
   targets:
     - ./applications/all.yaml
+    - ./controlplanes/all.yaml
+    - ./dataplanes/all.yaml
     - ./system.yaml
     - ./org.yaml

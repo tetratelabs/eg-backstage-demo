@@ -8,9 +8,25 @@ spec:
     - developers
 ---
 apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: sre1
+spec:
+  memberOf:
+    - sres
+---
+apiVersion: backstage.io/v1alpha1
 kind: Group
 metadata:
   name: developers
+spec:
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: sres
 spec:
   type: team
   children: []
