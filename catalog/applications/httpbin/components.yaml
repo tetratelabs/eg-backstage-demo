@@ -10,4 +10,4 @@ spec:
   owner: developers
   system: applications
   providesApis:
-    - bookinfo-api
+    - httpbin-api
