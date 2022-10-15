@@ -18,8 +18,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     yarn config set python /usr/bin/python3
 
-RUN mkdir /app && chown node:node /app
-
 # From here on we use the least-privileged `node` user to run the backend.
 USER node
 WORKDIR /app

@@ -134,7 +134,7 @@ function tryFormatClusterLink(options: FormatClusterLinkOptions) {
       clusterLink: formatClusterLink(options),
       errorMessage: '',
     };
-  } catch (err) {
+  } catch (err: any) {
     return {
       clusterLink: '',
       errorMessage: err.message || err.toString(),
