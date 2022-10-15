@@ -32,9 +32,10 @@ import { HTTPRouteDrawer } from '../CustomResources/Gateways/HTTPRouteDrawer';
 
 type ServiceSummaryProps = {
   service: V1Service;
+  isExposed: boolean;
 };
 
-const ServiceSummary = ({ service }: ServiceSummaryProps) => {
+const ServiceSummary = ({ service, isExposed }: ServiceSummaryProps) => {
   return (
     <Grid
       container
@@ -55,13 +56,17 @@ const ServiceSummary = ({ service }: ServiceSummaryProps) => {
           Type: {service.spec?.type ?? '?'}
         </Typography>
       </Grid>
-      <Grid item xs="auto">
-        <HTTPRouteDrawer
-          labelButton="Expose"
-          title={service.metadata?.name}
-          subtitle="Expose HTTPRoute"
-        />
-      </Grid>
+      {isExposed ? (
+        <></>
+      ) : (
+        <Grid item xs="auto">
+          <HTTPRouteDrawer
+            labelButton="Expose"
+            title={service.metadata?.name}
+            subtitle="Expose Service"
+          />
+        </Grid>
+      )}
     </Grid>
   );
 };
@@ -99,13 +104,14 @@ type ServicesAccordionsProps = {};
 
 type ServiceAccordionProps = {
   service: V1Service;
+  isExposed: boolean;
 };
 
-const ServiceAccordion = ({ service }: ServiceAccordionProps) => {
+const ServiceAccordion = ({ service, isExposed }: ServiceAccordionProps) => {
   return (
     <Accordion TransitionProps={{ unmountOnExit: true }}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <ServiceSummary service={service} />
+        <ServiceSummary service={service} isExposed={isExposed} />
       </AccordionSummary>
       <AccordionDetails>
         <ServiceCard service={service} />
@@ -125,7 +131,14 @@ export const ServicesAccordions = ({}: ServicesAccordionsProps) => {
     >
       {groupedResponses.services.map((service, i) => (
         <Grid item key={i} xs>
-          <ServiceAccordion service={service} />
+          <ServiceAccordion
+            service={service}
+            isExposed={
+              groupedResponses.customResources.filter(
+                r => r.kind === 'HTTPRoute',
+              ).length > 0 && !service.metadata?.namespace?.endsWith('-system')
+            }
+          />
         </Grid>
       ))}
     </Grid>

@@ -1,4 +1,3 @@
-/* eslint-disable notice/notice */
 // Copyright (c) Tetrate, Inc 2022 All Rights Reserved.
 
 import React, { MouseEvent, useState } from 'react';
