@@ -46,3 +46,5 @@ site
 
 # Sensitive credentials
 *-credentials.yaml
+
+.cache
