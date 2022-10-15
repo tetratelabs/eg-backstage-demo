@@ -57,7 +57,7 @@ import {
   Direction,
   EntityCatalogGraphCard,
 } from '@backstage/plugin-catalog-graph';
-import { EntityKubernetesContent } from '@backstage/plugin-kubernetes';
+import { EntityKubernetesContent } from '@internal/plugin-kubernetes';
 import {
   RELATION_API_CONSUMED_BY,
   RELATION_API_PROVIDED_BY,
