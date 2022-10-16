@@ -55,15 +55,6 @@ function renderResource(resource: any) {
       time: manager.time,
     };
   });
-  // metadata.rules = resource?.spec?.rules?.map((rule: any) => {
-  //   return {
-  //     ports: rule?.backendRefs?.map((ref: any) => ref.port),
-  //     paths: rule?.matches?.map((match: any) => {
-  //       return { path: match.path.value, type: match.path.type };
-  //     }),
-  //   };
-  // });
-  console.log(resource);
   return { ...newResource, ...resource };
 }
 
