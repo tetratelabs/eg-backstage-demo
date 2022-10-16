@@ -50,25 +50,25 @@ const HTTPRouteSummary = ({
   const kubernetesApi = useApi(kubernetesApiRef);
 
   const handleClickDelete = (e: MouseEvent) => {
-    setAlertOpen(true);
     e.stopPropagation();
+    setAlertOpen(true);
   };
 
   const handleDeleteDialogNo = (e: MouseEvent) => {
-    setAlertOpen(false);
     e.stopPropagation();
+    setAlertOpen(false);
   };
 
   const handleDeleteDialogYes = async (e: MouseEvent) => {
+    e.stopPropagation();
     await kubernetesApi.deleteObject({
       group: 'gateway.networking.k8s.io',
       version: 'v1beta1',
       namespace: 'default',
       plural: 'httproutes',
-      name: 'httpbin' // TODO(dio): Set name from the current entity.
+      name: 'httpbin', // TODO(dio): Set name from the current entity.
     });
     setAlertOpen(false);
-    e.stopPropagation();
   };
 
   return (

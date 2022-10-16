@@ -72,11 +72,13 @@ export const HTTPRouteDrawer = ({
   const kubernetesApi = useApi(kubernetesApiRef);
 
   const handleCloseDrawer = (e: MouseEvent) => {
-    setOpen(false);
     e.stopPropagation();
+    setOpen(false);
   };
 
   const handleOpenDrawer = (e: MouseEvent) => {
+    e.stopPropagation();
+
     // Sync states to props.
 
     // Sync hostnames.
@@ -102,21 +104,21 @@ export const HTTPRouteDrawer = ({
     setParentName(resource?.spec?.parentRefs?.[0]?.name);
 
     setOpen(true);
-    e.stopPropagation();
   };
 
   const handleAddHostname = (e: MouseEvent) => {
-    setHostnames([...hostnames, '']);
     e.stopPropagation();
+    setHostnames([...hostnames, '']);
   };
 
   const handleAddPath = (e: MouseEvent) => {
-    setPaths([...paths, '']);
     e.stopPropagation();
+    setPaths([...paths, '']);
   };
 
-  const handleSave = (e: MouseEvent) => {
-    kubernetesApi.applyObject({
+  const handleSave = async (e: MouseEvent) => {
+    e.stopPropagation();
+    await kubernetesApi.applyObject({
       apiVersion: 'gateway.networking.k8s.io/v1beta1',
       kind: 'HTTPRoute',
       metadata: {
@@ -155,7 +157,7 @@ export const HTTPRouteDrawer = ({
         ],
       },
     });
-    e.stopPropagation();
+    setOpen(false);
   };
 
   return (
