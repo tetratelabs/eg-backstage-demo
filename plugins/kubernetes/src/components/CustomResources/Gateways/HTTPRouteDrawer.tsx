@@ -82,7 +82,6 @@ export const HTTPRouteDrawer = ({
   };
 
   const handleSave = (e: MouseEvent) => {
-    alert(JSON.stringify({ parentRefName: 'eg', hostnames, paths }));
     kubernetesApi.applyObject({
       "apiVersion": "gateway.networking.k8s.io/v1beta1",
       "kind": "HTTPRoute",
