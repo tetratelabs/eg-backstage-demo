@@ -18,6 +18,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { StructuredMetadataTable } from '@backstage/core-components';
 import { DefaultCustomResourceDrawer } from '../DefaultCustomResourceDrawer';
 import { HTTPRouteDrawer } from './HTTPRouteDrawer';
+import { useApi } from '@backstage/core-plugin-api';
+import { kubernetesApiRef } from '../../../api/types';
 
 type HTTPRouteAccordionProps = {
   resource: any;
@@ -45,6 +47,8 @@ const HTTPRouteSummary = ({
 }: HTTPRouteSummaryProps) => {
   const [isAlertOpen, setAlertOpen] = useState(false);
 
+  const kubernetesApi = useApi(kubernetesApiRef);
+
   const handleClickDelete = (e: MouseEvent) => {
     setAlertOpen(true);
     e.stopPropagation();
@@ -55,7 +59,14 @@ const HTTPRouteSummary = ({
     e.stopPropagation();
   };
 
-  const handleDeleteDialogYes = (e: MouseEvent) => {
+  const handleDeleteDialogYes = async (e: MouseEvent) => {
+    await kubernetesApi.deleteObject({
+      group: 'gateway.networking.k8s.io',
+      version: 'v1beta1',
+      namespace: 'default',
+      plural: 'httproutes',
+      name: 'httpbin' // TODO(dio): Set name from the current entity.
+    });
     setAlertOpen(false);
     e.stopPropagation();
   };

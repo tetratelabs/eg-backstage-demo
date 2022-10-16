@@ -18,6 +18,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import Close from '@material-ui/icons/Close';
+import { useApi } from '@backstage/core-plugin-api';
+import { kubernetesApiRef } from '../../../api/types';
 
 const useDrawerStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -62,6 +64,7 @@ export const HTTPRouteDrawer = ({
   const [hostnames, setHostnames] = useState<string[]>(['']);
   const [paths, setPaths] = useState<string[]>(['']);
   const classes = useDrawerStyles();
+  const kubernetesApi = useApi(kubernetesApiRef);
 
   const handleToggleDrawer = (e: MouseEvent) => {
     setOpen(!isOpen);
@@ -80,6 +83,45 @@ export const HTTPRouteDrawer = ({
 
   const handleSave = (e: MouseEvent) => {
     alert(JSON.stringify({ parentRefName: 'eg', hostnames, paths }));
+    kubernetesApi.applyObject({
+      "apiVersion": "gateway.networking.k8s.io/v1beta1",
+      "kind": "HTTPRoute",
+      "metadata": {
+        "name": "httpbin",
+        "labels": {
+          "app": "httpbin"
+        }
+      },
+      "spec": {
+        "parentRefs": [
+          {
+            "name": "eg"
+          }
+        ],
+        "hostnames": hostnames,
+        "rules": [
+          {
+            "backendRefs": [
+              {
+                "group": "",
+                "kind": "Service",
+                "name": "httpbin",
+                "port": 80,
+                "weight": 1
+              }
+            ],
+            "matches": [
+              {
+                "path": {
+                  "type": "PathPrefix",
+                  "value": paths[0]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    });
     e.stopPropagation();
   };
 

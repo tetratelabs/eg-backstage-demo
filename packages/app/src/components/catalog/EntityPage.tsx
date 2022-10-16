@@ -168,7 +168,7 @@ const serviceEntityPage = (
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/kubernetes" title="Kubernetes">
-      <EntityKubernetesContent refreshIntervalMs={30000} />
+      <EntityKubernetesContent refreshIntervalMs={5000} />
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/dependencies" title="Dependencies">

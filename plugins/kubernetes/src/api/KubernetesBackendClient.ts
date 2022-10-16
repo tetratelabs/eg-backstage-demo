@@ -110,4 +110,36 @@ export class KubernetesBackendClient implements KubernetesApi {
 
     return (await this.handleResponse(response)).items;
   }
+
+  async deleteObject(request: any): Promise<any> {
+    const { token: idToken } = await this.identityApi.getCredentials();
+    const url = `${await this.discoveryApi.getBaseUrl('kubernetes-editor')}/delete`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(idToken && { Authorization: `Bearer ${idToken}` }),
+      },
+      body: JSON.stringify(request),
+    })
+
+    return await this.handleResponse(response)
+  }
+
+  async applyObject(request: any): Promise<any> {
+    const { token: idToken } = await this.identityApi.getCredentials();
+    const url = `${await this.discoveryApi.getBaseUrl('kubernetes-editor')}/apply`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(idToken && { Authorization: `Bearer ${idToken}` }),
+      },
+      body: JSON.stringify(request),
+    })
+
+    return await this.handleResponse(response)
+  }
 }
