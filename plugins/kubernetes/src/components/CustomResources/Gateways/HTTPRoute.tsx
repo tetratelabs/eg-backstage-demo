@@ -41,6 +41,32 @@ type HTTPRouteSummaryProps = {
   children?: React.ReactNode;
 };
 
+function renderResource(resource: any) {
+  const newResource = { hostnames: [], parentRefs: [], managers: [] };
+  newResource.hostnames = resource?.spec?.hostnames || [];
+  newResource.parentRefs = resource?.spec?.parentRefs?.map((ref: any) => {
+    return { name: ref.name, kind: ref.kind, group: ref.group };
+  });
+  newResource.managers = resource?.metadata?.managedFields?.map(manager => {
+    return {
+      manager: manager.manager,
+      operation: manager.operation,
+      subresource: manager.subresource,
+      time: manager.time,
+    };
+  });
+  // metadata.rules = resource?.spec?.rules?.map((rule: any) => {
+  //   return {
+  //     ports: rule?.backendRefs?.map((ref: any) => ref.port),
+  //     paths: rule?.matches?.map((match: any) => {
+  //       return { path: match.path.value, type: match.path.type };
+  //     }),
+  //   };
+  // });
+  console.log(resource);
+  return { ...newResource, ...resource };
+}
+
 const HTTPRouteSummary = ({
   resource,
   resourceName,
@@ -81,7 +107,7 @@ const HTTPRouteSummary = ({
       >
         <Grid xs={3} item>
           <DefaultCustomResourceDrawer
-            customResource={resource}
+            customResource={renderResource(resource)}
             customResourceName={resourceName}
           />
         </Grid>
