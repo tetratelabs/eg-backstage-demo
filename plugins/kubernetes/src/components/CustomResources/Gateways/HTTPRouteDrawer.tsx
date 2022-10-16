@@ -51,23 +51,57 @@ const useDrawerStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+type HTTPRouteDrawerProps = {
+  labelButton: String;
+  title?: String;
+  subtitle?: String;
+  resource?: any;
+};
+
 export const HTTPRouteDrawer = ({
   labelButton,
   title,
   subtitle,
-}: {
-  labelButton: String;
-  title?: String;
-  subtitle?: String;
-}) => {
+  resource,
+}: HTTPRouteDrawerProps) => {
   const [isOpen, setOpen] = useState(false);
-  const [hostnames, setHostnames] = useState<string[]>(['']);
-  const [paths, setPaths] = useState<string[]>(['']);
+  const [hostnames, setHostnames] = useState<string[]>([]);
+  const [paths, setPaths] = useState<string[]>([]);
+  const [parentName, setParentName] = useState('');
   const classes = useDrawerStyles();
   const kubernetesApi = useApi(kubernetesApiRef);
 
-  const handleToggleDrawer = (e: MouseEvent) => {
-    setOpen(!isOpen);
+  const handleCloseDrawer = (e: MouseEvent) => {
+    setOpen(false);
+    e.stopPropagation();
+  };
+
+  const handleOpenDrawer = (e: MouseEvent) => {
+    // Sync states to props.
+
+    // Sync hostnames.
+    setHostnames(resource?.spec?.hostnames?.slice() || []);
+
+    // Sync paths.
+    const newPaths: string[] = [];
+    const rulesLength = resource?.spec?.rules?.length || 0;
+    for (let i = 0; i < rulesLength; i++) {
+      const matches = resource.spec.rules[i].matches;
+      const matchesLength = matches?.length || 0;
+      for (let j = 0; j < matchesLength; j++) {
+        const match = matches[j];
+        if (match?.path?.value) {
+          newPaths.push(match.path.value);
+        }
+      }
+    }
+    setPaths(newPaths);
+
+    // Sync parent ref.
+    // TODO(inas): check if we should support many parent refs.
+    setParentName(resource?.spec?.parentRefs?.[0]?.name);
+
+    setOpen(true);
     e.stopPropagation();
   };
 
@@ -83,50 +117,50 @@ export const HTTPRouteDrawer = ({
 
   const handleSave = (e: MouseEvent) => {
     kubernetesApi.applyObject({
-      "apiVersion": "gateway.networking.k8s.io/v1beta1",
-      "kind": "HTTPRoute",
-      "metadata": {
-        "name": "httpbin",
-        "labels": {
-          "app": "httpbin"
-        }
+      apiVersion: 'gateway.networking.k8s.io/v1beta1',
+      kind: 'HTTPRoute',
+      metadata: {
+        name: 'httpbin',
+        labels: {
+          app: 'httpbin',
+        },
       },
-      "spec": {
-        "parentRefs": [
+      spec: {
+        parentRefs: [
           {
-            "name": "eg"
-          }
+            name: 'eg',
+          },
         ],
-        "hostnames": hostnames,
-        "rules": [
+        hostnames: hostnames,
+        rules: [
           {
-            "backendRefs": [
+            backendRefs: [
               {
-                "group": "",
-                "kind": "Service",
-                "name": "httpbin",
-                "port": 80,
-                "weight": 1
-              }
+                group: '',
+                kind: 'Service',
+                name: 'httpbin',
+                port: 80,
+                weight: 1,
+              },
             ],
-            "matches": [
+            matches: [
               {
-                "path": {
-                  "type": "PathPrefix",
-                  "value": paths[0]
-                }
-              }
-            ]
-          }
-        ]
-      }
+                path: {
+                  type: 'PathPrefix',
+                  value: paths[0],
+                },
+              },
+            ],
+          },
+        ],
+      },
     });
     e.stopPropagation();
   };
 
   return (
     <>
-      <Button variant="outlined" onClick={handleToggleDrawer}>
+      <Button variant="outlined" onClick={handleOpenDrawer}>
         {labelButton}
       </Button>
       <Drawer
@@ -135,7 +169,7 @@ export const HTTPRouteDrawer = ({
         }}
         anchor="right"
         open={isOpen}
-        onClose={handleToggleDrawer}
+        onClose={handleCloseDrawer}
         onClick={event => event.stopPropagation()}
       >
         <div className={classes.header}>
@@ -159,7 +193,7 @@ export const HTTPRouteDrawer = ({
           <IconButton
             key="dismiss"
             title="Close the drawer"
-            onClick={handleToggleDrawer}
+            onClick={handleCloseDrawer}
             color="inherit"
           >
             <Close className={classes.icon} />
@@ -179,7 +213,7 @@ export const HTTPRouteDrawer = ({
               <Select
                 labelId="parent-select-label"
                 id="parent-select"
-                value="eg"
+                value={parentName}
                 label="Parent Ref"
                 variant="filled"
               >

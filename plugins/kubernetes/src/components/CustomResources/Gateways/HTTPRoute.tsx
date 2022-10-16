@@ -93,6 +93,7 @@ const HTTPRouteSummary = ({
             labelButton="Edit"
             title={resource.metadata.name}
             subtitle="Edit HTTPRoute"
+            resource={resource}
           />
         </Grid>
         <Grid item xs="auto">
@@ -128,14 +129,14 @@ const HTTPRouteAccordion = ({
 }: HTTPRouteAccordionProps) => {
   // Prepare data to render.
   const metadata = { hostnames: [], gateways: [], rules: [] };
-  metadata.hostnames = resource.spec.hostnames;
-  metadata.gateways = resource.spec.parentRefs.map((ref: any) => {
+  metadata.hostnames = resource?.spec?.hostnames || [];
+  metadata.gateways = resource?.spec?.parentRefs?.map((ref: any) => {
     return { name: ref.name, kind: ref.kind, group: ref.group };
   });
-  metadata.rules = resource.spec.rules.map((rule: any) => {
+  metadata.rules = resource?.spec?.rules?.map((rule: any) => {
     return {
-      ports: rule.backendRefs.map((ref: any) => ref.port),
-      paths: rule.matches.map((match: any) => {
+      ports: rule?.backendRefs?.map((ref: any) => ref.port),
+      paths: rule?.matches?.map((match: any) => {
         return { path: match.path.value, type: match.path.type };
       }),
     };
