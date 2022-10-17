@@ -56,4 +56,8 @@ yarn dev
 
 ## Blog setup
 
+Apply resources in blog/resources.
 
+1. class
+2. instance
+3. route
