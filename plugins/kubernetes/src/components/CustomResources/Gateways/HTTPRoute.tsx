@@ -47,14 +47,16 @@ function renderResource(resource: any) {
   newResource.parentRefs = resource?.spec?.parentRefs?.map((ref: any) => {
     return { name: ref.name, kind: ref.kind, group: ref.group };
   });
-  newResource.managers = resource?.metadata?.managedFields?.map(manager => {
-    return {
-      manager: manager.manager,
-      operation: manager.operation,
-      subresource: manager.subresource,
-      time: manager.time,
-    };
-  });
+  newResource.managers = resource?.metadata?.managedFields?.map(
+    (manager: any) => {
+      return {
+        manager: manager.manager,
+        operation: manager.operation,
+        subresource: manager.subresource,
+        time: manager.time,
+      };
+    },
+  );
   return { ...newResource, ...resource };
 }
 

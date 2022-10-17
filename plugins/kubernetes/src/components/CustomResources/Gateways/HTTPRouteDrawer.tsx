@@ -130,7 +130,7 @@ export const HTTPRouteDrawer = ({
       spec: {
         parentRefs: [
           {
-            name: 'eg',
+            name: 'insecure-port',
           },
         ],
         hostnames: hostnames,
@@ -141,7 +141,7 @@ export const HTTPRouteDrawer = ({
                 group: '',
                 kind: 'Service',
                 name: 'httpbin',
-                port: 80,
+                port: 8000,
                 weight: 1,
               },
             ],
@@ -219,7 +219,7 @@ export const HTTPRouteDrawer = ({
                 label="Parent Ref"
                 variant="filled"
               >
-                <MenuItem value="eg">eg (gateway.networking.k8s.io)</MenuItem>
+                <MenuItem value="insecure-port">insecure-port (gateway.networking.k8s.io)</MenuItem>
               </Select>
             </FormControl>
           </Grid>

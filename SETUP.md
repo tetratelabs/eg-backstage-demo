@@ -52,3 +52,8 @@ kubectl proxy
 ```console
 yarn dev
 ```
+
+
+## Blog setup
+
+
