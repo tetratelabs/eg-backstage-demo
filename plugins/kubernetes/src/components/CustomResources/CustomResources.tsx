@@ -19,7 +19,8 @@ import lodash, { Dictionary } from 'lodash';
 import { RolloutAccordions } from './ArgoRollouts';
 import { DefaultCustomResourceAccordions } from './DefaultCustomResource';
 import { GroupedResponsesContext } from '../../hooks';
-import { HTTPRouteAccordions } from './Gateways';
+import { HTTPRouteAccordions } from './HTTPRoutes';
+import { GatewayAccordions, GatewayClassAccordions } from './Gateways';
 
 interface CustomResourcesProps {
   children?: React.ReactNode;
@@ -45,8 +46,24 @@ export const CustomResources = ({}: CustomResourcesProps) => {
             return (
               <HTTPRouteAccordions
                 key={i}
-                resources={resources}
-                resourceName={kind}
+                customResources={resources}
+                customResourceName={kind}
+              />
+            );
+          case 'GatewayClass':
+            return (
+              <GatewayClassAccordions
+                key={i}
+                customResources={resources}
+                customResourceName={kind}
+              />
+            );
+          case 'Gateway':
+            return (
+              <GatewayAccordions
+                key={i}
+                customResources={resources}
+                customResourceName={kind}
               />
             );
           default:

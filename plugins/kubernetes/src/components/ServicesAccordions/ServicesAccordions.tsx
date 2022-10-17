@@ -28,7 +28,7 @@ import { V1Service } from '@kubernetes/client-node';
 import { ServiceDrawer } from './ServiceDrawer';
 import { GroupedResponsesContext } from '../../hooks';
 import { StructuredMetadataTable } from '@backstage/core-components';
-import { HTTPRouteDrawer } from '../CustomResources/Gateways/HTTPRouteDrawer';
+import { HTTPRouteDrawer } from '../CustomResources/HTTPRoutes/HTTPRouteDrawer';
 
 type ServiceSummaryProps = {
   service: V1Service;

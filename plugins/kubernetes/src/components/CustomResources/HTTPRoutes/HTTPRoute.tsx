@@ -22,15 +22,15 @@ import { useApi } from '@backstage/core-plugin-api';
 import { kubernetesApiRef } from '../../../api/types';
 
 type HTTPRouteAccordionProps = {
-  resource: any;
-  resourceName: string;
+  customResource: any;
+  customResourceName: string;
   defaultExpanded?: boolean;
   children?: React.ReactNode;
 };
 
 type HTTPRouteAccordionsProps = {
-  resources: any[];
-  resourceName: string;
+  customResources: any[];
+  customResourceName: string;
   defaultExpanded?: boolean;
   children?: React.ReactNode;
 };
@@ -142,8 +142,8 @@ const HTTPRouteSummary = ({
 };
 
 const HTTPRouteAccordion = ({
-  resource,
-  resourceName,
+  customResource: resource,
+  customResourceName: resourceName,
   defaultExpanded,
 }: HTTPRouteAccordionProps) => {
   // Prepare data to render.
@@ -179,8 +179,8 @@ const HTTPRouteAccordion = ({
 };
 
 export const HTTPRouteAccordions = ({
-  resources,
-  resourceName,
+  customResources: resources,
+  customResourceName: resourceName,
   defaultExpanded = false,
 }: HTTPRouteAccordionsProps) => (
   <Grid
@@ -194,8 +194,8 @@ export const HTTPRouteAccordions = ({
         <Grid item xs>
           <HTTPRouteAccordion
             defaultExpanded={defaultExpanded}
-            resource={cr}
-            resourceName={resourceName}
+            customResource={cr}
+            customResourceName={resourceName}
           />
         </Grid>
       </Grid>

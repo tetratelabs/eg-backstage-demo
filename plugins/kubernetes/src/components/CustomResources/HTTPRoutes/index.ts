@@ -13,5 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export * from './GatewayClass';
-export * from './Gateway';
+export * from './HTTPRoute';
+export * from './HTTPRouteDrawer';
