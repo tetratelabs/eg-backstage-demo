@@ -64,6 +64,7 @@ const ServiceSummary = ({ service, isExposed }: ServiceSummaryProps) => {
             labelButton="Expose"
             title={service.metadata?.name}
             subtitle="Expose Service"
+            resource={service}
           />
         </Grid>
       )}
@@ -122,6 +123,7 @@ const ServiceAccordion = ({ service, isExposed }: ServiceAccordionProps) => {
 
 export const ServicesAccordions = ({}: ServicesAccordionsProps) => {
   const groupedResponses = useContext(GroupedResponsesContext);
+  console.log(groupedResponses);
   return (
     <Grid
       container

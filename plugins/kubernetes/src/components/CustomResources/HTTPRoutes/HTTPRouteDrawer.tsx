@@ -118,19 +118,19 @@ export const HTTPRouteDrawer = ({
 
   const handleSave = async (e: MouseEvent) => {
     e.stopPropagation();
-    await kubernetesApi.applyObject({
+    const request = {
       apiVersion: 'gateway.networking.k8s.io/v1beta1',
       kind: 'HTTPRoute',
       metadata: {
-        name: 'httpbin',
+        name: resource?.metadata?.name,
         labels: {
-          app: 'httpbin',
+          app: resource?.metadata?.labels?.app,
         },
       },
       spec: {
         parentRefs: [
           {
-            name: 'insecure-port',
+            name: parentName,
           },
         ],
         hostnames: hostnames,
@@ -140,23 +140,24 @@ export const HTTPRouteDrawer = ({
               {
                 group: '',
                 kind: 'Service',
-                name: 'httpbin',
-                port: 8000,
+                name: resource?.spec?.selector?.app,
+                port: resource?.spec?.ports?.[0].port,
                 weight: 1,
               },
             ],
-            matches: [
-              {
+            matches: paths.map(path => {
+              return {
                 path: {
                   type: 'PathPrefix',
-                  value: paths[0],
+                  value: path,
                 },
-              },
-            ],
+              };
+            }),
           },
         ],
       },
-    });
+    };
+    await kubernetesApi.applyObject(request);
     setOpen(false);
   };
 
@@ -218,8 +219,13 @@ export const HTTPRouteDrawer = ({
                 value={parentName}
                 label="Parent Ref"
                 variant="filled"
+                onChange={event => {
+                  setParentName(event?.target?.value?.toString() || '');
+                }}
               >
-                <MenuItem value="insecure-port">insecure-port (gateway.networking.k8s.io)</MenuItem>
+                <MenuItem value="insecure-port">
+                  insecure-port (gateway.networking.k8s.io)
+                </MenuItem>
               </Select>
             </FormControl>
           </Grid>
