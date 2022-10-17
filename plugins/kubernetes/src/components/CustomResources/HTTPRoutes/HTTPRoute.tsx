@@ -80,12 +80,13 @@ const HTTPRouteSummary = ({
 
   const handleDeleteDialogYes = async (e: MouseEvent) => {
     e.stopPropagation();
+    const apiVersions = resource?.apiVersion?.split('/');
     await kubernetesApi.deleteObject({
-      group: 'gateway.networking.k8s.io',
-      version: 'v1beta1',
-      namespace: 'default',
-      plural: 'httproutes',
-      name: 'httpbin', // TODO(dio): Set name from the current entity.
+      group: apiVersions[0],
+      version: apiVersions[1],
+      namespace: resource?.metadata?.namespace,
+      plural: `${resource?.kind?.toLowerCase()}s`,
+      name: resource?.metadata?.name, // TODO(dio): Set name from the current entity.
     });
     setAlertOpen(false);
   };
@@ -170,7 +171,7 @@ const HTTPRouteAccordion = ({
         <HTTPRouteSummary resource={resource} resourceName={resourceName} />
       </AccordionSummary>
       <AccordionDetails>
-        {resource.hasOwnProperty('status') && (
+        {resource.hasOwnProperty('metadata') && (
           <StructuredMetadataTable metadata={metadata} />
         )}
       </AccordionDetails>
