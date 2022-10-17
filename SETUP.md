@@ -31,7 +31,8 @@ kubectl apply -f https://github.com/envoyproxy/gateway/releases/download/v0.2.0-
 6. Install dataplanes resources:
 
 ```
-kubectl apply -f catalog/dataplanes/envoygateway/resources
+kubectl apply -f catalog/dataplanes/envoygateway/resources/gatewayclass.yaml
+kubectl apply -f catalog/dataplanes/envoygateway/resources/gateway.yaml
 ```
 
 6. Expose httpbin:
