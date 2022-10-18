@@ -53,6 +53,24 @@ kubectl proxy
 yarn dev
 ```
 
+## EKS setup
+1. Create an EKS cluster
+
+`eksctl create cluster -f deploy/eks/eks-cluster.yaml`
+
+2. Follow step 3-7 above to install EG and HTTPBin
+
+3. Deploy postgres and backstage
+
+`kubectl apply -f deploy/kubernetes`
+
+4. Use kubectl port forward
+
+`kubectl port-forward -n backstage svc/backstage 7007:80`
+
+Note current backstage image hardcoded http://localhost:7007 baseUrl so don't change port.
+
+Then access http://localhost:7007.
 
 ## Blog setup
 
