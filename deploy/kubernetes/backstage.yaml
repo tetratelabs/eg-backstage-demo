@@ -15,11 +15,16 @@ spec:
     spec:
       containers:
         - name: backstage
-          image: public.ecr.aws/b8v8u7a8/eg-backstage-demo:latest
-          imagePullPolicy: IfNotPresent
+          image: public.ecr.aws/b8v8u7a8/eg-backstage-demo@sha256:ee6622c94f13590cbb14199663f8e3debae3fb6bfb9ffa35ebf36284f1e070b3
+          imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 7007
+          env:
+          - name: POSTGRES_HOST
+            value: "postgres.backstage.svc.cluster.local"
+          - name: POSTGRES_PORT
+            value: "5432"
           envFrom:
             - secretRef:
                 name: postgres-secrets
