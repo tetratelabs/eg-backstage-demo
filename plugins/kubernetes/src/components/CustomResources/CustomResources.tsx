@@ -19,6 +19,8 @@ import lodash, { Dictionary } from 'lodash';
 import { RolloutAccordions } from './ArgoRollouts';
 import { DefaultCustomResourceAccordions } from './DefaultCustomResource';
 import { GroupedResponsesContext } from '../../hooks';
+
+// The hack starts here:
 import { HTTPRouteAccordions } from './HTTPRoutes';
 import { GatewayAccordions, GatewayClassAccordions } from './Gateways';
 
@@ -66,6 +68,7 @@ export const CustomResources = ({}: CustomResourcesProps) => {
                 customResourceName={kind}
               />
             );
+
           default:
             return (
               <DefaultCustomResourceAccordions

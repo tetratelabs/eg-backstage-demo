@@ -63,7 +63,7 @@ const ServiceSummary = ({ service, isExposed }: ServiceSummaryProps) => {
           <HTTPRouteDrawer
             labelButton="Expose"
             title={service.metadata?.name}
-            subtitle="Expose Service"
+            subtitle="Expose Service via Gateway Instance"
             resource={service}
           />
         </Grid>

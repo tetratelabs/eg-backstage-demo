@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-import {
-  KubeConfig,
-  CustomObjectsApi,
-} from '@kubernetes/client-node';
-
 import { errorHandler } from '@backstage/backend-common';
 import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
 
-type KubernetesEditorDeleteAction = {
-  group: string;
-  version: string;
-  namespace: string;
-  kind: string;
-  plural: string;
-  name: string;
-}
+import {
+  KubeConfig,
+  CustomObjectsApi,
+} from '@kubernetes/client-node';
 
 export interface RouterOptions {
   logger: Logger;
@@ -42,44 +33,81 @@ export async function createRouter(
 ): Promise<express.Router> {
   const { logger } = options;
 
-  // TODO(dio): Load using the cluster details.
-  const kc = new KubeConfig();
-  kc.loadFromDefault();
-
-  const client = kc.makeApiClient(CustomObjectsApi);
-
   const router = Router();
   router.use(express.json());
 
   router.get('/health', (_, response) => {
     logger.info('PONG!');
-    response.send({ status: 'ok' });
+    response.json({ status: 'ok' });
   });
 
-  router.post('/apply', async (request, response) => {
-    const body = request.body;
-    console.log(body);
-    // TODO(dio): Using patch instead.
+  // The hack begins here:
+  const kc = new KubeConfig();
+  kc.loadFromDefault(); // We always fo loadFromDefault here.
+
+  const customObjectApiClient = kc.makeApiClient(CustomObjectsApi);
+
+  router.post('/cr/apply', async (request, response) => {
+    const action = request.body;
+    // The right way to do this is by doing patching.
     try {
-      await client.deleteNamespacedCustomObject('gateway.networking.k8s.io', 'v1beta1', body.metadata.namespace || 'default', 'httproutes', body.metadata.name);
-    } catch (e: any) {
-      //
+      await customObjectApiClient.deleteNamespacedCustomObject(
+        action.group,
+        action.version,
+        action.namespace,
+        action.plural,
+        action.name
+      )
+    } catch {
+      // Nothing to do here.
     }
-    await client.createNamespacedCustomObject('gateway.networking.k8s.io', 'v1beta1', body.metadata.namespace || 'default', 'httproutes', body);
-    response.send({ status: 'ok' });
+
+    await customObjectApiClient.createNamespacedCustomObject(
+      action.group,
+      action.version,
+      action.namespace,
+      action.plural,
+      action.body
+    )
+
+    response.json({ status: 'ok' });
   });
 
-  router.post('/delete', async (request, response) => {
-    const deleteAction: KubernetesEditorDeleteAction = request.body
-    await client.deleteNamespacedCustomObject(
-      deleteAction.group,
-      deleteAction.version,
-      deleteAction.namespace,
-      deleteAction.plural,
-      deleteAction.name
+  router.post('/cr/delete', async (request, response) => {
+    const action = request.body;
+    await customObjectApiClient.deleteNamespacedCustomObject(
+      action.group,
+      action.version,
+      action.namespace,
+      action.plural,
+      action.name
     );
-    response.send({ status: 'ok' });
+    response.json({ status: 'ok' });
   });
+
+  router.post('/cr/list', async (request, response) => {
+    const action = request.body;
+    await customObjectApiClient.listNamespacedCustomObject(
+      action.group,
+      action.version,
+      action.namespace,
+      action.plural
+    );
+    response.json({ status: 'ok' });
+  });
+
+  router.post('/cr/get', async (request, response) => {
+    const action = request.body;
+    await customObjectApiClient.getNamespacedCustomObject(
+      action.group,
+      action.version,
+      action.namespace,
+      action.plural,
+      action.name
+    );
+    response.json({ status: 'ok' });
+  });
+
   router.use(errorHandler());
   return router;
 }

@@ -1,0 +1,9 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: httpbin
+  description: A collection of all the HTTPBin entities
+spec:
+  targets:
+    - ./components.yaml
+    - ./api.yaml

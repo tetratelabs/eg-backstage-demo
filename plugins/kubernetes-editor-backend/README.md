@@ -1,14 +1,5 @@
 # kubernetes-editor-backend
 
-Welcome to the kubernetes-editor-backend backend plugin!
+This is a hack, we bypass almost everything. The right way to resolve this probably by adopting https://github.com/backstage/backstage/pull/13026.
 
-_This plugin was created through the Backstage CLI_
-
-## Getting started
-
-Your plugin has been added to the example app in this repository, meaning you'll be able to access it by running `yarn
-start` in the root directory, and then navigating to [/kubernetes-editor-backend](http://localhost:3000/kubernetes-editor-backend).
-
-You can also serve the plugin in isolation by running `yarn start` in the plugin directory.
-This method of serving the plugin provides quicker iteration speed and a faster startup and hot reloads.
-It is only meant for local development, and the setup for it can be found inside the [/dev](/dev) directory.
+See: https://github.com/backstage/backstage/issues/12231#issuecomment-1192875578 for more details.

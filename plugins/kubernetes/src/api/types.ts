@@ -44,7 +44,8 @@ export interface KubernetesApi {
     request: CustomObjectsByEntityRequest,
   ): Promise<ObjectsByEntityResponse>;
 
-  // TODO(dio): Make sure we have the right request object type.
-  deleteObject(request: any) : Promise<any>;
-  applyObject(request: any) : Promise<any>;
+  applyCustomObject(payload: any): Promise<any>;
+  deleteCustomObject(payload: any): Promise<any>;
+  getCustomObject(payload: any): Promise<any> ;
+  listCustomObjects(payload: any): Promise<any>;
 }

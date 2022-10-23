@@ -8,8 +8,6 @@ DIST ?= $(root_dir)dist
 
 CONFIG ?= $(DIST)/app-config.yaml
 
-os := $(shell uname | tr A-Z a-z)
-
 # Local cache directory.
 CACHE_DIR ?= $(root_dir).cache
 
@@ -17,25 +15,31 @@ prepackaged_tools_dir := $(CACHE_DIR)/tools/prepackaged
 
 export PATH := $(prepackaged_tools_dir)/bin:$(PATH)
 
+# Skip installing cypress binary.
+export CYPRESS_INSTALL_BINARY ?= 0
+
 # Prepackaged tools targets.
 node := $(prepackaged_tools_dir)/bin/node
 yarn := $(prepackaged_tools_dir)/bin/yarn
 
-build: $(yarn)
+build: dist-types ## Build the app
 	@rm -fr $(DIST)
-	$(call yarn-build)
+	@$(yarn) build
 	$(call extract-to-dist,skeleton)
 	$(call extract-to-dist,bundle)
 	@cp app-config*.yaml $(DIST)
 	@$(yarn) --cwd $(DIST) --production
 
-start:
+dev: $(yarn) ## Start dev server
+	@$(yarn) install --frozen-lockfile
+	@$(yarn) dev
+
+run: $(node) ## Run the app
 	@cd $(DIST)/packages && $(node) backend --config $(CONFIG)
 
-define yarn-build
+dist-types: $(yarn)
 	@$(yarn) install --frozen-lockfile
-	@$(yarn) build
-endef
+	@$(yarn) tsc
 
 define extract-to-dist
 	@mkdir -p $(DIST) && tar xzf $(root_dir)packages/backend/dist/$1.tar.gz -C $(DIST)
@@ -49,6 +53,7 @@ $(yarn): $(node)
 	@curl -sSL $(call yarn-download-archive-url,$@) -o $(yarn)
 	@chmod +x $(yarn)
 
+os := $(shell uname | tr A-Z a-z)
 # Install node from https://nodejs.org/dist. We don't support win32 yet as this script will fail.
 node-version = $(subst nodejs.org/node@v,,$($(notdir $1)@v))
 # Always use x64 for now, since one of the modules only works for x64.

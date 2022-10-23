@@ -1,5 +1,5 @@
 app:
-  title: Scaffolded Backstage App
+  title: Backstage
   baseUrl: http://localhost:3000
 
 organization:
@@ -20,6 +20,8 @@ backend:
     # host: 0.0.0.0
   csp:
     connect-src: ["'self'", 'http:', 'https:']
+    # Disable Upgrade-Insecure-Requests since the scenario is always on localhost.
+    upgrade-insecure-requests: false
     # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
     # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
@@ -34,6 +36,8 @@ backend:
   cache:
     store: memory
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+
+  # This allows fetching information from some external URLs.
   reading:
     allow:
       - host: 'httpbin.org'
@@ -79,10 +83,12 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, User, Group]
   locations:
+    # Load all entities from our example-catalog.
     - type: file
-      target: ../../catalog/all.yaml
+      target: ../../examples/example-catalog/all.yaml
 
 kubernetes:
+  # The following are custom resources that we are interested in this playground.
   customResources:
     - group: 'gateway.networking.k8s.io'
       apiVersion: 'v1beta1'
@@ -99,4 +105,5 @@ kubernetes:
   serviceLocatorMethod:
     type: 'multiTenant'
   clusterLocatorMethods:
+    # For this playground, we use a local cluster. Please follow: examples/kubernetes/local/SETUP.md to bring a local cluster up.
     - type: 'localKubectlProxy'

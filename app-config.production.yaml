@@ -8,7 +8,7 @@ backend:
   # reachable not just from within the backend host, but from all of your
   # callers. When its value is "http://localhost:7007", it's strictly private
   # and can't be reached by others.
-  baseUrl: "http://localhost:7007"
+  baseUrl: http://localhost:7007
   listen:
     port: 7007
     # The following host directive binds to all IPv4 interfaces when its value
@@ -38,22 +38,3 @@ catalog:
   # See https://backstage.io/docs/features/software-catalog/software-catalog-overview#adding-components-to-the-catalog for more details
   # on how to get entities into the catalog.
   locations: []
-
-kubernetes:
-  customResources:
-    - group: 'gateway.networking.k8s.io'
-      apiVersion: 'v1beta1'
-      plural: 'gatewayclasses'
-    - group: 'gateway.networking.k8s.io'
-      apiVersion: 'v1beta1'
-      plural: 'gateways'
-    - group: 'gateway.networking.k8s.io'
-      apiVersion: 'v1beta1'
-      plural: 'httproutes'
-    - group: 'config.gateway.envoyproxy.io'
-      apiVersion: 'v1alpha1'
-      plural: 'envoyproxies'
-  serviceLocatorMethod:
-    type: 'multiTenant'
-  clusterLocatorMethods:
-    - type: 'localKubectlProxy'

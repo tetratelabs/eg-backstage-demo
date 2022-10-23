@@ -107,13 +107,10 @@ class MockKubernetesClient implements KubernetesApi {
     return [{ name: 'mock-cluster', authProvider: 'serviceAccount' }];
   }
 
-  async deleteObject(_: any): Promise<any> {
-    return {};
-  }
-
-  async applyObject(_: any): Promise<any> {
-    return {};
-  }
+  async applyCustomObject(): Promise<any> {}
+  async deleteCustomObject(): Promise<any> {}
+  async getCustomObject(): Promise<any> {}
+  async listCustomObjects(): Promise<any> {}
 }
 
 createDevApp()

@@ -54,8 +54,8 @@ export class KubernetesBackendClient implements KubernetesApi {
     return await response.json();
   }
 
-  private async postRequired(path: string, requestBody: any): Promise<any> {
-    const url = `${await this.discoveryApi.getBaseUrl('kubernetes')}${path}`;
+  private async postRequired(path: string, requestBody: any, baseUrl: string = 'kubernetes'): Promise<any> {
+    const url = `${await this.discoveryApi.getBaseUrl(baseUrl)}${path}`;
     const { token: idToken } = await this.identityApi.getCredentials();
     const response = await fetch(url, {
       method: 'POST',
@@ -111,35 +111,24 @@ export class KubernetesBackendClient implements KubernetesApi {
     return (await this.handleResponse(response)).items;
   }
 
-  async deleteObject(request: any): Promise<any> {
-    const { token: idToken } = await this.identityApi.getCredentials();
-    const url = `${await this.discoveryApi.getBaseUrl('kubernetes-editor')}/delete`;
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(idToken && { Authorization: `Bearer ${idToken}` }),
-      },
-      body: JSON.stringify(request),
-    })
-
-    return await this.handleResponse(response)
+  // The hack starts here.
+  async sendRequestBody(action: string, requestBody: any): Promise<any> {
+    return this.postRequired(action, requestBody, 'kubernetes-editor');
   }
 
-  async applyObject(request: any): Promise<any> {
-    const { token: idToken } = await this.identityApi.getCredentials();
-    const url = `${await this.discoveryApi.getBaseUrl('kubernetes-editor')}/apply`;
+  async applyCustomObject(payload: any): Promise<any> {
+    return this.sendRequestBody('/cr/apply', payload)
+  }
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(idToken && { Authorization: `Bearer ${idToken}` }),
-      },
-      body: JSON.stringify(request),
-    })
+  async deleteCustomObject(payload: any): Promise<any> {
+    return this.sendRequestBody('/cr/delete', payload)
+  }
 
-    return await this.handleResponse(response)
+  async getCustomObject(payload: any): Promise<any> {
+    return this.sendRequestBody('/cr/get', payload)
+  }
+
+  async listCustomObjects(payload: any): Promise<any> {
+    return this.sendRequestBody('/cr/list', payload)
   }
 }

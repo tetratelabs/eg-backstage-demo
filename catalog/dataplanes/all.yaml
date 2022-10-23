@@ -1,8 +1,0 @@
-apiVersion: backstage.io/v1alpha1
-kind: Location
-metadata:
-  name: dataplanes
-  description: A collection of all data planes
-spec:
-  targets:
-    - ./envoygateway/all.yaml

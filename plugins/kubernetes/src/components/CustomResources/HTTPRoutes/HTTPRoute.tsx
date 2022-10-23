@@ -81,12 +81,12 @@ const HTTPRouteSummary = ({
   const handleDeleteDialogYes = async (e: MouseEvent) => {
     e.stopPropagation();
     const apiVersions = resource?.apiVersion?.split('/');
-    await kubernetesApi.deleteObject({
+    await kubernetesApi.deleteCustomObject({
       group: apiVersions[0],
       version: apiVersions[1],
       namespace: resource?.metadata?.namespace,
       plural: `${resource?.kind?.toLowerCase()}s`,
-      name: resource?.metadata?.name, // TODO(dio): Set name from the current entity.
+      name: resource?.metadata?.name,
     });
     setAlertOpen(false);
   };

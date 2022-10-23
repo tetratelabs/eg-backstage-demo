@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: entities
+  description: A collection of all entities
+spec:
+  targets:
+    - ./applications/all.yaml
+    - ./controlplanes/all.yaml
+    - ./dataplanes/all.yaml
+    - ./systems.yaml
+    - ./organizations.yaml

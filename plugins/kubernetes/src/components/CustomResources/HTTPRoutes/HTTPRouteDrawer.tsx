@@ -100,7 +100,7 @@ export const HTTPRouteDrawer = ({
     setPaths(newPaths);
 
     // Sync parent ref.
-    // TODO(inas): check if we should support many parent refs.
+    // TODO(nascode): check if we should support many parent refs.
     setParentName(resource?.spec?.parentRefs?.[0]?.name);
 
     setOpen(true);
@@ -157,7 +157,7 @@ export const HTTPRouteDrawer = ({
         ],
       },
     };
-    await kubernetesApi.applyObject(request);
+    await kubernetesApi.applyCustomObject(request);
     setOpen(false);
   };
 
@@ -211,15 +211,15 @@ export const HTTPRouteDrawer = ({
           <Grid item>
             <FormControl fullWidth>
               <InputLabel id="parent-select-label" variant="filled">
-                Parent Ref
+                Gateway instance
               </InputLabel>
               <Select
                 labelId="parent-select-label"
                 id="parent-select"
                 value={parentName}
-                label="Parent Ref"
+                label="Gateway instance"
                 variant="filled"
-                onChange={event => {
+                onChange={(event: any) => {
                   setParentName(event?.target?.value?.toString() || '');
                 }}
               >
@@ -230,7 +230,7 @@ export const HTTPRouteDrawer = ({
             </FormControl>
           </Grid>
           <Grid item>
-            <Typography variant="h5">Hostnames</Typography>
+            <Typography variant="h6">Hostnames</Typography>
           </Grid>
           {hostnames.map((name, index) => (
             <Grid item key={index}>
@@ -268,7 +268,7 @@ export const HTTPRouteDrawer = ({
             </Button>
           </Grid>
           <Grid item>
-            <Typography variant="h5">Paths</Typography>
+            <Typography variant="h6">Paths</Typography>
           </Grid>
           {paths.map((name, index) => (
             <Grid item key={index}>

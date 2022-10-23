@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: envoy-gateway-data-plane
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'data-plane=envoy-gateway'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: platform-engineers
+  system: dataplanes

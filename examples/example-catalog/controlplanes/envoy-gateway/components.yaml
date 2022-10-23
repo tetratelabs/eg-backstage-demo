@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: envoy-gateway-control-plane
+  annotations:
+    'backstage.io/kubernetes-label-selector': 'control-plane=envoy-gateway'
+spec:
+  type: service
+  lifecycle: experimental
+  owner: platform-engineers
+  system: controlplanes

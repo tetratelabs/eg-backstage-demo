@@ -1,0 +1,32 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: developer1
+spec:
+  memberOf:
+    - developers
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: platform-engineer-1
+spec:
+  memberOf:
+    - platform-engineers
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: developers
+spec:
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: platform-engineers
+spec:
+  type: team
+  children: []

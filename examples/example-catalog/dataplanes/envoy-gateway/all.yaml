@@ -1,0 +1,8 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: envoy-gateway-data-plane
+  description: A collection of all the envoy-gateway-data-plane entities
+spec:
+  targets:
+    - ./components.yaml

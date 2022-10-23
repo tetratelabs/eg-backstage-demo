@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: httpbin-api
+  description: A simple HTTP request and response service API.
+spec:
+  type: openapi
+  lifecycle: production
+  owner: developers
+  system: applications
+  definition:
+    $text: https://httpbin.org/spec.json
