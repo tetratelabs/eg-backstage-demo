@@ -1,7 +1,7 @@
 /* eslint-disable no-alert */
 // Copyright (c) Tetrate, Inc 2022 All Rights Reserved.
 
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import {
   Button,
   createStyles,
@@ -70,6 +70,20 @@ export const HTTPRouteDrawer = ({
   const [parentName, setParentName] = useState('');
   const classes = useDrawerStyles();
   const kubernetesApi = useApi(kubernetesApiRef);
+  const [parentRefs, setParentRefs] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function fetchParents() {
+      const { items } = await kubernetesApi.listCustomObjects({
+        group: 'gateway.networking.k8s.io',
+        version: 'v1beta1',
+        namespace: resource?.metadata?.namespace,
+        plural: 'gateways',
+      });
+      setParentRefs(items);
+    }
+    fetchParents();
+  }, [resource, kubernetesApi]);
 
   const handleCloseDrawer = (e: MouseEvent) => {
     e.stopPropagation();
@@ -231,9 +245,11 @@ export const HTTPRouteDrawer = ({
                   setParentName(event?.target?.value?.toString() || '');
                 }}
               >
-                <MenuItem value="insecure-port">
-                  insecure-port (gateway.networking.k8s.io)
-                </MenuItem>
+                {parentRefs.map((parentRef: any) => (
+                  <MenuItem value={parentRef.metadata?.name}>
+                    {parentRef.metadata?.name} ({parentRef.apiVersion})
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>

@@ -62,50 +62,49 @@ export async function createRouter(
       // Nothing to do here.
     }
 
-    await customObjectApiClient.createNamespacedCustomObject(
+    const { body } = await customObjectApiClient.createNamespacedCustomObject(
       action.group,
       action.version,
       action.namespace,
       action.plural,
       action.body
     )
-
-    response.json({ status: 'ok' });
+    response.json(body);
   });
 
   router.post('/cr/delete', async (request, response) => {
     const action = request.body;
-    await customObjectApiClient.deleteNamespacedCustomObject(
+    const { body } = await customObjectApiClient.deleteNamespacedCustomObject(
       action.group,
       action.version,
       action.namespace,
       action.plural,
       action.name
     );
-    response.json({ status: 'ok' });
+    response.json(body);
   });
 
   router.post('/cr/list', async (request, response) => {
     const action = request.body;
-    await customObjectApiClient.listNamespacedCustomObject(
+    const { body } = await customObjectApiClient.listNamespacedCustomObject(
       action.group,
       action.version,
       action.namespace,
       action.plural
     );
-    response.json({ status: 'ok' });
+    return response.json(body);
   });
 
   router.post('/cr/get', async (request, response) => {
     const action = request.body;
-    await customObjectApiClient.getNamespacedCustomObject(
+    const { body } = await customObjectApiClient.getNamespacedCustomObject(
       action.group,
       action.version,
       action.namespace,
       action.plural,
       action.name
     );
-    response.json({ status: 'ok' });
+    response.json(body);
   });
 
   router.use(errorHandler());
