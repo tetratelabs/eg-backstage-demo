@@ -9,11 +9,11 @@
 1. (optional) [`node`](https://nodejs.org/). The v16.18.0 LTS version is recommended. Note: Make sure to use `x64` architecture, since some of the modules still `x64`-only.
 1. (optional) [`yarn`](https://classic.yarnpkg.com/lang/en/docs/install/) classic.
 
-> Note: We supply a `Makefile` that downloads all of the required [tools](./Tools.mk).
+> Note: We supply a [`Makefile`](./Makefile) that downloads all of the required [tools](./Tools.mk).
 
 ## Playing around
 
-First we need to build the app, you can run the following command (⚠️ This takes a while, be patient):
+After you have a running cluster with Envoy Gateway installed, you need to build the Backstage App, you can run the following command (⚠️ This takes a while, be patient):
 
 ```console
 make build
@@ -33,7 +33,7 @@ Then, when the log lines show similar to the following,
 2022-10-23T02:45:10.261Z backstage info Listening on :7007
 ```
 
-afterwards, you can open a browser by pointing it to http://localhost:7007.
+you can open a browser by pointing it to http://localhost:7007.
 
 ![Exposing a service](https://user-images.githubusercontent.com/73152/197379576-510ae57a-e83a-4360-b46d-e25c9d0e0834.png)
 

@@ -123,7 +123,6 @@ const ServiceAccordion = ({ service, isExposed }: ServiceAccordionProps) => {
 
 export const ServicesAccordions = ({}: ServicesAccordionsProps) => {
   const groupedResponses = useContext(GroupedResponsesContext);
-  console.log(groupedResponses);
   return (
     <Grid
       container

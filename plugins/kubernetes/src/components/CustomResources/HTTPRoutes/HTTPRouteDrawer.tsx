@@ -118,7 +118,7 @@ export const HTTPRouteDrawer = ({
 
   const handleSave = async (e: MouseEvent) => {
     e.stopPropagation();
-    const request = {
+    const body = {
       apiVersion: 'gateway.networking.k8s.io/v1beta1',
       kind: 'HTTPRoute',
       metadata: {
@@ -156,6 +156,14 @@ export const HTTPRouteDrawer = ({
           },
         ],
       },
+    };
+    const apiVersions = body.apiVersion?.split('/');
+    const request = {
+      group: apiVersions[0],
+      version: apiVersions[1],
+      namespace: resource?.metadata?.namespace,
+      plural: `${body?.kind?.toLowerCase()}s`,
+      body,
     };
     await kubernetesApi.applyCustomObject(request);
     setOpen(false);
