@@ -5,13 +5,13 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Button,
   Divider,
   Grid,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { DefaultCustomResourceDrawer } from '../DefaultCustomResourceDrawer';
 import { StructuredMetadataTable } from '@backstage/core-components';
+import { GatewayDrawer } from './GatewayDrawer';
 
 type GatewayClassAccordionsProps = {
   customResources: any[];
@@ -54,9 +54,12 @@ const GatewayClassResourceSummary = ({
         <Divider style={{ height: '5em' }} orientation="vertical" />
       </Grid>
       <Grid item xs="auto">
-        <Button variant="outlined" onClick={e => e.stopPropagation()}>
-          Create Instance
-        </Button>
+        <GatewayDrawer
+          labelButton="Create Instance"
+          title={customResource.metadata?.name}
+          subtitle="Expose Service via Gateway Instance"
+          customResource={customResource}
+        />
       </Grid>
     </Grid>
   );
