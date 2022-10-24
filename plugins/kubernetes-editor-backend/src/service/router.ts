@@ -22,6 +22,7 @@ import { Logger } from 'winston';
 import {
   KubeConfig,
   CustomObjectsApi,
+  PatchUtils
 } from '@kubernetes/client-node';
 
 export interface RouterOptions {
@@ -50,27 +51,46 @@ export async function createRouter(
   router.post('/cr/apply', async (request, response) => {
     const action = request.body;
     action.name = action.body?.metadata?.name;
-    // The right way to do this is by doing patching.
     try {
-      await customObjectApiClient.deleteNamespacedCustomObject(
+      const current = await customObjectApiClient.getNamespacedCustomObject(
         action.group,
         action.version,
         action.namespace,
         action.plural,
         action.name
       )
+      const currentBody: any = current.body
+      const patch = [
+        {
+          op: 'replace',
+          path: '/spec',
+          value: currentBody.spec,
+        },
+      ];
+      const patchOptions = { headers: { 'Content-type': PatchUtils.PATCH_FORMAT_JSON_PATCH } };
+      const { body } = await customObjectApiClient.patchNamespacedCustomObject(
+        action.group,
+        action.version,
+        action.namespace,
+        action.plural,
+        action.name,
+        patch,
+        undefined,
+        undefined,
+        undefined,
+        patchOptions
+      )
+      response.json(body)
     } catch {
-      // Nothing to do here.
+      const { body } = await customObjectApiClient.createNamespacedCustomObject(
+        action.group,
+        action.version,
+        action.namespace,
+        action.plural,
+        action.body
+      )
+      response.json(body);
     }
-
-    const { body } = await customObjectApiClient.createNamespacedCustomObject(
-      action.group,
-      action.version,
-      action.namespace,
-      action.plural,
-      action.body
-    )
-    response.json(body);
   });
 
   router.post('/cr/delete', async (request, response) => {
