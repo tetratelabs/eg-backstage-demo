@@ -49,6 +49,7 @@ export async function createRouter(
 
   router.post('/cr/apply', async (request, response) => {
     const action = request.body;
+    action.name = action.body?.metadata?.name;
     // The right way to do this is by doing patching.
     try {
       await customObjectApiClient.deleteNamespacedCustomObject(

@@ -154,7 +154,7 @@ export const HTTPRouteDrawer = ({
               {
                 group: '',
                 kind: 'Service',
-                name: resource?.spec?.selector?.app,
+                name: resource?.metadata?.name,
                 port: resource?.spec?.ports?.[0].port,
                 weight: 1,
               },
@@ -171,6 +171,9 @@ export const HTTPRouteDrawer = ({
         ],
       },
     };
+    if (Array.isArray(resource.spec?.rules)) {
+      body.spec.rules = resource.spec?.rules;
+    }
     const apiVersions = body.apiVersion?.split('/');
     const request = {
       group: apiVersions[0],
@@ -238,7 +241,7 @@ export const HTTPRouteDrawer = ({
               <Select
                 labelId="parent-select-label"
                 id="parent-select"
-                value={parentName}
+                value={parentName || ''}
                 label="Gateway instance"
                 variant="filled"
                 onChange={(event: any) => {
@@ -246,7 +249,10 @@ export const HTTPRouteDrawer = ({
                 }}
               >
                 {parentRefs.map((parentRef: any) => (
-                  <MenuItem value={parentRef.metadata?.name}>
+                  <MenuItem
+                    key={parentRef.metadata?.name}
+                    value={parentRef.metadata?.name}
+                  >
                     {parentRef.metadata?.name} ({parentRef.apiVersion})
                   </MenuItem>
                 ))}
