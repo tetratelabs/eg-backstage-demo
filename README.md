@@ -1,6 +1,6 @@
 # [Envoy Gateway](https://gateway.envoyproxy.io/) [Backstage](https://backstage.io/) Playground
 
-> ⚠️ This repository is a playground, a sketch to seek possible UI/UX when interacting with Envoy deployments managed via [Gateway API](https://gateway-api.sigs.k8s.io/). This contains _full of ugly hacks_, merely to show the potentials.
+> **Warning**: This repository is a playground, a sketch to seek possible UI/UX when interacting with Envoy deployments managed via [Gateway API](https://gateway-api.sigs.k8s.io/). This contains _full of ugly hacks_, merely to show the potentials.
 
 ## Prerequisites
 
@@ -13,7 +13,9 @@
 
 ## Playing around
 
-After you have a running cluster with Envoy Gateway installed, you need to build the Backstage App, you can run the following command (⚠️ This takes a while, be patient):
+> **Warning**: Some of the commands takes a while, be patient.
+
+After you have a running cluster with Envoy Gateway installed, you need to build the Backstage App, you can run the following command:
 
 ```console
 make build
@@ -25,7 +27,7 @@ After that, the app will be created in `./dist` directory. To run the app:
 make run
 ```
 
-> Tips: `make build run` works fine too! (⚠️ This takes a while, be patient).
+> **Note**: `make build run` works fine too!
 
 Then, when the log lines show similar to the following,
 
