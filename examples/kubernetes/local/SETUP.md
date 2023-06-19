@@ -13,7 +13,7 @@ kind create cluster
 4. Install the required resources to install Envoy Gateway in this local cluster.
 
 ```console
-kubectl apply -f https://github.com/envoyproxy/gateway/releases/download/v0.2.0/install.yaml
+kubectl apply -f https://github.com/envoyproxy/gateway/releases/download/v0.4.0/install.yaml
 ```
 
 Check if everything is running (make sure you have "response" from the following requests):
