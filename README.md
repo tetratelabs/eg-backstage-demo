@@ -37,6 +37,8 @@ Then, when the log lines show similar to the following,
 
 you can open a browser by pointing it to http://localhost:7007.
 
+Click `httpbin` in components list, select `Kubernetes` tab, scroll down and expand `Local` click `Expose` button next to the `Service`
+
 ![Exposing a service](https://user-images.githubusercontent.com/73152/197379576-510ae57a-e83a-4360-b46d-e25c9d0e0834.png)
 
 ## Licenses
